@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyAIDoubt Support — support.myaidoubt.in</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#08080f;--surface:#0f0f1a;--card:#141420;--border:rgba(255,255,255,0.07);
+  --text:#f0f0ff;--muted:#5a5a7a;--muted2:#8888aa;
+  --pink:#FF1464;--orange:#FF6B00;--yellow:#FFD700;
+  --grad:linear-gradient(135deg,#FF1464,#FF6B00,#FFD700);
+  --grad2:linear-gradient(135deg,#FF1464,#FF6B00);
+  --green:#06d6a0;
+}
+html,body{background:var(--bg);font-family:'Outfit',sans-serif;color:var(--text);min-height:100%;}
+
+/* NAV */
+nav{
+  padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(8,8,15,0.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo-icon{
+  width:34px;height:34px;border-radius:10px;
+  background:var(--grad2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+.nav-logo-text{font-weight:900;font-size:17px;}
+.nav-logo-text .ai{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-support{font-size:13px;font-weight:700;color:var(--muted2);}
+
+/* HERO */
+.hero{
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,20,100,0.1) 0%,transparent 60%),var(--bg);
+  padding:40px 24px 36px;text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.hero-title{font-size:24px;font-weight:900;letter-spacing:-0.5px;line-height:1.3;margin-bottom:20px;}
+.hero-title span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* SEARCH */
+.search-wrap{
+  position:relative;max-width:480px;margin:0 auto;
+}
+.search-input{
+  width:100%;padding:16px 20px 16px 48px;
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:16px;color:var(--text);
+  font-family:'Outfit',sans-serif;font-size:15px;
+  outline:none;transition:all 0.2s;
+}
+.search-input:focus{border-color:rgba(255,20,100,0.4);}
+.search-input::placeholder{color:var(--muted);}
+.search-icon{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  font-size:18px;color:var(--muted);pointer-events:none;
+}
+.search-results{
+  display:none;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;margin-top:8px;overflow:hidden;
+}
+.search-result-item{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  cursor:pointer;font-size:14px;font-weight:500;
+  display:flex;align-items:center;gap:10px;
+  transition:background 0.15s;
+}
+.search-result-item:last-child{border-bottom:none;}
+.search-result-item:hover{background:rgba(255,255,255,0.03);}
+.search-result-item:active{background:rgba(255,20,100,0.06);}
+
+/* MAIN */
+main{padding:24px 16px 80px;max-width:480px;margin:0 auto;}
+
+/* SECTION */
+.section-label{
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--muted);
+  margin-bottom:12px;margin-top:28px;
+  padding:0 4px;
+}
+
+/* CATEGORY CARDS */
+.cat-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:8px;}
+.cat-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;padding:18px 20px;
+  display:flex;align-items:center;gap:14px;
+  cursor:pointer;transition:all 0.2s;
+}
+.cat-card:active{transform:scale(0.99);}
+.cat-icon{
+  width:46px;height:46px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+}
+.cat-info{flex:1;}
+.cat-name{font-size:15px;font-weight:800;margin-bottom:2px;}
+.cat-count{font-size:12px;color:var(--muted2);}
+.cat-arrow{color:var(--muted);font-size:18px;}
+
+/* ARTICLE PAGE */
+.article-page{
+  display:none;position:fixed;inset:0;
+  background:var(--bg);z-index:200;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.article-header{
+  padding:14px 16px;
+  display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;
+  background:rgba(8,8,15,0.95);backdrop-filter:blur(20px);
+  z-index:10;
+}
+.back-btn{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:pointer;flex-shrink:0;
+}
+.article-header-title{font-size:15px;font-weight:800;flex:1;}
+.article-list{padding:16px;}
+.article-item{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:16px 18px;margin-bottom:10px;
+  cursor:pointer;transition:all 0.2s;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.article-item:active{transform:scale(0.99);}
+.article-item-text{font-size:14px;font-weight:600;line-height:1.4;flex:1;}
+.article-item-arrow{color:var(--muted);font-size:16px;flex-shrink:0;}
+
+/* ARTICLE DETAIL */
+.article-detail{
+  display:none;position:fixed;inset:0;
+  background:var(--bg);z-index:300;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+}
+.article-content{padding:24px 20px 60px;}
+.article-title{font-size:22px;font-weight:900;letter-spacing:-0.5px;margin-bottom:8px;line-height:1.3;}
+.article-meta{font-size:12px;color:var(--muted2);margin-bottom:24px;}
+.article-body{font-size:14px;color:var(--muted2);line-height:1.8;}
+.article-body h3{font-size:16px;font-weight:800;color:var(--text);margin:20px 0 8px;}
+.article-body p{margin-bottom:12px;}
+.article-body ul{padding-left:18px;margin-bottom:12px;}
+.article-body ul li{margin-bottom:6px;}
+.article-body .highlight{
+  background:rgba(255,20,100,0.08);border:1px solid rgba(255,20,100,0.15);
+  border-radius:10px;padding:12px 14px;margin:14px 0;
+  font-size:13px;color:var(--text);
+}
+.article-body .tip{
+  background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.15);
+  border-radius:10px;padding:12px 14px;margin:14px 0;
+  font-size:13px;color:var(--text);
+}
+.helpful-row{
+  display:flex;align-items:center;gap:10px;
+  margin-top:32px;padding-top:20px;
+  border-top:1px solid var(--border);
+}
+.helpful-label{font-size:13px;color:var(--muted2);flex:1;}
+.helpful-btn{
+  padding:8px 16px;border-radius:10px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--text);font-size:13px;font-weight:700;cursor:pointer;
+  font-family:'Outfit',sans-serif;
+}
+
+/* CONTACT SECTION */
+.contact-card{
+  background:linear-gradient(135deg,rgba(255,20,100,0.08),rgba(255,107,0,0.05));
+  border:1px solid rgba(255,20,100,0.2);
+  border-radius:20px;padding:22px 20px;margin-top:8px;
+}
+.contact-title{font-size:16px;font-weight:800;margin-bottom:6px;}
+.contact-sub{font-size:13px;color:var(--muted2);line-height:1.6;margin-bottom:18px;}
+.contact-email-btn{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 18px;border-radius:14px;
+  background:var(--grad2);border:none;color:white;
+  font-size:14px;font-weight:700;cursor:pointer;
+  font-family:'Outfit',sans-serif;width:100%;
+  justify-content:center;margin-bottom:10px;
+  box-shadow:0 4px 16px rgba(255,20,100,0.3);
+}
+.contact-form-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:13px 18px;border-radius:14px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--muted2);font-size:14px;font-weight:700;cursor:pointer;
+  font-family:'Outfit',sans-serif;width:100%;
+}
+.response-time{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;color:var(--muted2);margin-top:10px;
+  justify-content:center;
+}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+
+/* CONTACT FORM MODAL */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);
+  z-index:500;align-items:flex-end;justify-content:center;
+}
+.modal-overlay.show{display:flex;}
+.modal{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:28px 28px 0 0;padding:24px 20px 40px;
+  width:100%;max-width:480px;
+}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.modal-title{font-size:18px;font-weight:900;}
+.modal-close{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:16px;
+}
+.form-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;display:block;}
+.form-input{
+  width:100%;padding:14px 16px;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:12px;color:var(--text);
+  font-family:'Outfit',sans-serif;font-size:14px;
+  outline:none;margin-bottom:14px;
+}
+.form-input:focus{border-color:rgba(255,20,100,0.4);}
+.form-input::placeholder{color:var(--muted);}
+.form-textarea{
+  width:100%;padding:14px 16px;min-height:100px;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:12px;color:var(--text);
+  font-family:'Outfit',sans-serif;font-size:14px;
+  outline:none;resize:none;margin-bottom:16px;
+}
+.form-textarea:focus{border-color:rgba(255,20,100,0.4);}
+.form-textarea::placeholder{color:var(--muted);}
+.form-submit{
+  width:100%;padding:16px;border-radius:14px;border:none;
+  background:var(--grad2);color:white;
+  font-size:15px;font-weight:800;cursor:pointer;
+  font-family:'Outfit',sans-serif;
+  box-shadow:0 6px 20px rgba(255,20,100,0.3);
+}
+.form-select{
+  width:100%;padding:14px 16px;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:12px;color:var(--text);
+  font-family:'Outfit',sans-serif;font-size:14px;
+  outline:none;margin-bottom:14px;
+  -webkit-appearance:none;
+}
+
+/* SUCCESS TOAST */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:var(--green);color:#000;
+  padding:12px 24px;border-radius:100px;
+  font-size:14px;font-weight:700;
+  opacity:0;transition:opacity 0.3s;
+  pointer-events:none;z-index:999;white-space:nowrap;
+}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">⚡</div>
+    <div class="nav-logo-text">My<span class="ai">AI</span>Doubt</div>
+  </div>
+  <div class="nav-support">Support</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-title">Search for <span>answers</span><br>or browse by topic</div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="searchInput" placeholder="Search for articles..." oninput="handleSearch(this.value)"/>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+
+  <div class="section-label">Browse Topics</div>
+  <div class="cat-grid">
+
+    <div class="cat-card" onclick="openCategory('start')">
+      <div class="cat-icon" style="background:rgba(255,20,100,0.1);">🚀</div>
+      <div class="cat-info">
+        <div class="cat-name">Getting Started</div>
+        <div class="cat-count">8 articles</div>
+      </div>
+      <div class="cat-arrow">›</div>
+    </div>
+
+    <div class="cat-card" onclick="openCategory('billing')">
+      <div class="cat-icon" style="background:rgba(255,215,0,0.1);">💳</div>
+      <div class="cat-info">
+        <div class="cat-name">Plans & Billing</div>
+        <div class="cat-count">6 articles</div>
+      </div>
+      <div class="cat-arrow">›</div>
+    </div>
+
+    <div class="cat-card" onclick="openCategory('troubleshoot')">
+      <div class="cat-icon" style="background:rgba(108,99,255,0.1);">🔧</div>
+      <div class="cat-info">
+        <div class="cat-name">Troubleshooting</div>
+        <div class="cat-count">7 articles</div>
+      </div>
+      <div class="cat-arrow">›</div>
+    </div>
+
+    <div class="cat-card" onclick="openCategory('photo')">
+      <div class="cat-icon" style="background:rgba(0,229,255,0.1);">📸</div>
+      <div class="cat-info">
+        <div class="cat-name">Photo & Camera Issues</div>
+        <div class="cat-count">5 articles</div>
+      </div>
+      <div class="cat-arrow">›</div>
+    </div>
+
+    <div class="cat-card" onclick="openCategory('account')">
+      <div class="cat-icon" style="background:rgba(6,214,160,0.1);">🔐</div>
+      <div class="cat-info">
+        <div class="cat-name">Account & Login</div>
+        <div class="cat-count">6 articles</div>
+      </div>
+      <div class="cat-arrow">›</div>
+    </div>
+
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section-label">Still need help?</div>
+  <div class="contact-card">
+    <div class="contact-title">Contact Support 💬</div>
+    <div class="contact-sub">Can't find what you're looking for? Our support team is here to help you.</div>
+    <button class="contact-email-btn" onclick="window.location.href='mailto:myaidoubt@gmail.com?subject=Support Request'">
+      ✉️ Email Us — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="533e2a323a373c26312713343e323a3f7d303c3e">[email&#160;protected]</a>
+    </button>
+    <button class="contact-form-btn" onclick="showContactForm()">
+      📝 Submit a Support Ticket
+    </button>
+    <div class="response-time">
+      <div class="online-dot"></div>
+      Usually responds within 24 hours
+    </div>
+  </div>
+
+</main>
+
+<!-- CATEGORY PAGE -->
+<div class="article-page" id="categoryPage">
+  <div class="article-header">
+    <div class="back-btn" onclick="closeCategory()">←</div>
+    <div class="article-header-title" id="catPageTitle"></div>
+  </div>
+  <div class="article-list" id="catArticleList"></div>
+</div>
+
+<!-- ARTICLE DETAIL PAGE -->
+<div class="article-detail" id="articleDetail">
+  <div class="article-header">
+    <div class="back-btn" onclick="closeArticle()">←</div>
+    <div class="article-header-title">Article</div>
+  </div>
+  <div class="article-content" id="articleContent"></div>
+</div>
+
+<!-- CONTACT FORM MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">📝 Support Ticket</div>
+      <div class="modal-close" onclick="hideContactForm()">✕</div>
+    </div>
+    <label class="form-label">Your Name</label>
+    <input class="form-input" placeholder="Enter your name" id="formName"/>
+    <label class="form-label">Email</label>
+    <input class="form-input" type="email" placeholder="your@email.com" id="formEmail"/>
+    <label class="form-label">Issue Type</label>
+    <select class="form-select" id="formType">
+      <option value="">Select issue type...</option>
+      <option>Account & Login</option>
+      <option>Plans & Billing</option>
+      <option>Photo not working</option>
+      <option>AI answer is wrong</option>
+      <option>App is slow/crashing</option>
+      <option>Feature request</option>
+      <option>Other</option>
+    </select>
+    <label class="form-label">Describe your issue</label>
+    <textarea class="form-textarea" placeholder="Tell us what happened in detail..." id="formMessage"></textarea>
+    <button class="form-submit" onclick="submitForm()">🚀 Send Ticket →</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ===== ARTICLES DATA =====
+const categories = {
+  start: {
+    title: '🚀 Getting Started',
+    articles: [
+      { title: 'What is MyAIDoubt?', content: `<h3>What is MyAIDoubt?</h3><p>MyAIDoubt is an AI-powered doubt solving app built for Indian students studying for JEE, NEET, CBSE and all other boards.</p><p>You can ask any question by typing it or uploading a photo, and our AI gives you a step-by-step solution instantly.</p><div class="tip">💡 Works for all subjects — Physics, Chemistry, Maths, Biology, English, Social Studies and more.</div>` },
+      { title: 'How do I create an account?', content: `<h3>Creating your account</h3><p>You can sign up using:</p><ul><li><strong>Google Login</strong> — fastest, one tap</li><li><strong>Email & Password</strong> — manual signup</li><li><strong>Guest</strong> — no signup, 2 free doubts</li></ul><div class="highlight">⚠️ Creating multiple accounts may result in permanent suspension.</div>` },
+      { title: 'How to solve my first doubt?', content: `<h3>Solving your first doubt</h3><p>1. Open the Solve page from bottom nav</p><p>2. Select your subject</p><p>3. Type your question OR tap Camera/Gallery to upload a photo</p><p>4. Choose your mode (Learn / Quick / Explain)</p><p>5. Tap ⚡ Solve Now!</p><div class="tip">💡 Use Learn mode for full step-by-step explanation.</div>` },
+      { title: 'What subjects are supported?', content: `<h3>Supported Subjects</h3><p>MyAIDoubt supports all major subjects:</p><ul><li>⚛️ Physics</li><li>🧪 Chemistry</li><li>🌀 Maths</li><li>🧬 Biology</li><li>📝 English</li><li>🌍 Social Studies</li><li>📊 Economics</li><li>💻 Computer Science</li><li>💡 And more!</li></ul>` },
+      { title: 'What are the 3 solving modes?', content: `<h3>Solving Modes</h3><h3>📖 Learn Mode</h3><p>Full step-by-step solution with concept explanation. Best for understanding a topic properly.</p><h3>⚡ Quick Mode</h3><p>Just the final answer. Fast and direct. Best when you need a quick check.</p><h3>🎓 Explain Mode</h3><p>Deep concept explanation. Best when you don't understand the topic at all.</p>` },
+      { title: 'How to install MyAIDoubt as an app?', content: `<h3>Install as App (PWA)</h3><p>MyAIDoubt works as a Progressive Web App — you can install it on your phone like a real app!</p><p><strong>On Android:</strong></p><ul><li>Open myaidoubt.in in Chrome</li><li>Tap the menu (⋮)</li><li>Tap "Add to Home Screen"</li><li>Done! Opens like a real app</li></ul><div class="tip">💡 No Play Store needed. Free installation!</div>` },
+      { title: 'Is MyAIDoubt free to use?', content: `<h3>Free Plan</h3><p>Yes! MyAIDoubt has a generous free plan:</p><ul><li>9 doubts per day</li><li>All subjects supported</li><li>Photo solving included</li><li>Resets every midnight</li></ul><p>You can also watch ads to earn extra doubts or upgrade to a paid plan for more.</p>` },
+      { title: 'How does Practice Mode work?', content: `<h3>Practice Mode</h3><p>Practice mode generates unlimited questions for you to practice.</p><p>Select your class, subject, topic and difficulty → tap Generate → solve the question → check the answer.</p><div class="tip">💡 Great for revision before exams!</div>` },
+    ]
+  },
+  billing: {
+    title: '💳 Plans & Billing',
+    articles: [
+      { title: 'What plans are available?', content: `<h3>Available Plans</h3><ul><li><strong>Free</strong> — 9 doubts/day</li><li><strong>Starter ₹149/mo</strong> — 45 doubts/day</li><li><strong>Pro ₹299/mo</strong> — 90 doubts/day</li><li><strong>Elite ₹499/mo</strong> — 180 doubts/day</li></ul><p>One-time packs also available: ₹29 for 50 questions, ₹49 for 100 questions.</p>` },
+      { title: 'When do my daily doubts reset?', content: `<h3>Daily Reset</h3><p>Your daily doubts reset every midnight at 12:00 AM automatically.</p><p>You don't need to do anything — just come back the next day and your full limit is restored.</p><div class="tip">💡 One-time packs never expire — use them anytime!</div>` },
+      { title: 'How does Watch Ad work?', content: `<h3>Watch Ad for Extra Doubt</h3><p>If you run out of daily doubts, you can watch a short 15-second ad to earn 1 extra doubt instantly.</p><p>You can watch up to 5 ads per day for 5 extra doubts.</p>` },
+      { title: 'How to cancel my subscription?', content: `<h3>Cancelling Subscription</h3><p>You can cancel your subscription anytime from the Profile page → Manage Subscription.</p><p>After cancelling, you keep your plan benefits until the end of the current billing month.</p><div class="highlight">⚠️ No refunds for partial months.</div>` },
+      { title: 'What payment methods are accepted?', content: `<h3>Payment Methods</h3><p>We accept all major payment methods in India:</p><ul><li>UPI (GPay, PhonePe, Paytm)</li><li>Debit & Credit Cards</li><li>Net Banking</li><li>All major wallets</li></ul><div class="tip">💡 All payments are 100% secure and encrypted.</div>` },
+      { title: 'Do one-time packs expire?', content: `<h3>One-Time Pack Validity</h3><p>No! One-time question packs never expire.</p><p>Buy ₹29 pack → get 50 questions → use them whenever you want. They stay in your account forever.</p><div class="tip">💡 Great value if you need occasional extra doubts.</div>` },
+    ]
+  },
+  troubleshoot: {
+    title: '🔧 Troubleshooting',
+    articles: [
+      { title: 'AI answer seems wrong — what to do?', content: `<h3>Wrong AI Answer</h3><p>AI can sometimes make mistakes, especially in complex problems. Here's what to do:</p><ul><li>Try rephrasing your question with more detail</li><li>Mention the specific concept or formula</li><li>Use Learn mode for better accuracy</li><li>Always verify important answers</li></ul><div class="highlight">⚠️ AI can make mistakes. Always cross-check critical answers.</div>` },
+      { title: 'App is loading slowly', content: `<h3>App Performance Issues</h3><p>If the app feels slow:</p><ul><li>Check your internet connection</li><li>Clear browser cache</li><li>Reload the page</li><li>Try on WiFi instead of mobile data</li></ul><div class="tip">💡 MyAIDoubt works best on a stable internet connection.</div>` },
+      { title: 'My doubt history is missing', content: `<h3>Missing Doubt History</h3><p>If your history is not showing:</p><ul><li>Make sure you're logged in to your account</li><li>Pull down to refresh on History page</li><li>Check if you're using the same account</li></ul><p>If history is still missing, contact support with your email address.</p>` },
+      { title: 'Solve button is not working', content: `<h3>Solve Button Not Working</h3><p>Try these steps:</p><ul><li>Make sure you've typed a question or uploaded a photo</li><li>Check your internet connection</li><li>Reload the page</li><li>Clear browser cache and try again</li></ul>` },
+      { title: 'I am not receiving verification email', content: `<h3>Verification Email</h3><p>If you didn't receive the verification email:</p><ul><li>Check your spam/junk folder</li><li>Make sure you entered the correct email</li><li>Try resending from the login page</li><li>Wait up to 5 minutes</li></ul>` },
+      { title: 'App crashes or freezes', content: `<h3>App Crashes</h3><p>If the app is crashing:</p><ul><li>Close and reopen the browser</li><li>Clear browser cache and cookies</li><li>Update your browser to latest version</li><li>Try a different browser</li></ul><p>If the problem persists, contact us with your device model and browser version.</p>` },
+      { title: 'How to report a bug?', content: `<h3>Reporting Bugs</h3><p>Found a bug? We'd love to know!</p><p>Email us at <strong>myaidoubt@gmail.com</strong> with:</p><ul><li>What happened</li><li>What you expected to happen</li><li>Your device and browser</li><li>Screenshot if possible</li></ul><div class="tip">💡 Your reports help us improve the app for everyone!</div>` },
+    ]
+  },
+  photo: {
+    title: '📸 Photo & Camera Issues',
+    articles: [
+      { title: 'How to upload a photo of my question?', content: `<h3>Uploading a Photo</h3><p>On the Solve page, tap:</p><ul><li><strong>📷 Camera</strong> — take a new photo directly</li><li><strong>🖼️ Gallery</strong> — choose from your photos</li></ul><p>After uploading, you can crop the image to focus on just the question.</p><div class="tip">💡 Make sure the photo is clear and well-lit for best results!</div>` },
+      { title: 'Camera permission not working', content: `<h3>Camera Permission</h3><p>If camera isn't working:</p><ul><li>Go to browser settings</li><li>Find Site Permissions or Camera</li><li>Allow camera access for myaidoubt.in</li><li>Reload the page</li></ul>` },
+      { title: 'AI is not reading my photo correctly', content: `<h3>Improving Photo Recognition</h3><p>For best results:</p><ul><li>Make sure the photo is clear and sharp</li><li>Good lighting — avoid shadows</li><li>Hold camera steady</li><li>Crop to just the question area</li><li>Avoid blurry or tilted photos</li></ul><div class="tip">💡 The clearer the photo, the better the AI reads it!</div>` },
+      { title: 'Photo is too blurry', content: `<h3>Blurry Photo Tips</h3><ul><li>Hold your phone steady when taking photo</li><li>Tap on the question text to focus the camera</li><li>Make sure there's enough light</li><li>Try moving closer to the text</li></ul>` },
+      { title: 'How to use the crop tool?', content: `<h3>Crop Tool</h3><p>After uploading a photo, a crop tool appears.</p><p>Drag the handles to select just the question area. This helps the AI focus on the right text.</p><p>Tap ✅ Use Cropped when done.</p>` },
+    ]
+  },
+  account: {
+    title: '🔐 Account & Login',
+    articles: [
+      { title: 'How to reset my password?', content: `<h3>Reset Password</h3><p>On the Login page, tap "Forgot password?"</p><p>Enter your email address and we'll send you a reset link.</p><p>Check your email (and spam folder) for the reset link.</p>` },
+      { title: 'Can I change my email address?', content: `<h3>Changing Email</h3><p>Currently, you cannot change your email address directly.</p><p>To use a different email, you'll need to create a new account.</p><p>Contact support at myaidoubt@gmail.com if you need help.</p>` },
+      { title: 'How to delete my account?', content: `<h3>Deleting Account</h3><p>To delete your account:</p><ul><li>Go to Profile page</li><li>Scroll to bottom</li><li>Tap "Delete Account"</li><li>Confirm deletion</li></ul><div class="highlight">⚠️ Account deletion is permanent. All your data and history will be lost.</div>` },
+      { title: 'Why is my account suspended?', content: `<h3>Account Suspension</h3><p>Accounts may be suspended for:</p><ul><li>Creating multiple accounts</li><li>Violating Terms of Service</li><li>Abusing the free trial system</li><li>Inappropriate use</li></ul><p>If you believe your account was suspended by mistake, email us at myaidoubt@gmail.com.</p>` },
+      { title: 'How to switch between accounts?', content: `<h3>Switching Accounts</h3><p>To switch accounts:</p><ul><li>Go to Profile page</li><li>Tap Logout</li><li>Login with the other account</li></ul><div class="highlight">⚠️ Remember: Only one account per person is allowed.</div>` },
+      { title: 'My Google login is not working', content: `<h3>Google Login Issues</h3><p>If Google login fails:</p><ul><li>Make sure you have internet connection</li><li>Try logging out of Google and back in</li><li>Clear browser cache</li><li>Try using Email/Password login instead</li><li>Contact support if issue persists</li></ul>` },
+    ]
+  }
+};
+
+// All articles flat for search
+const allArticles = [];
+Object.entries(categories).forEach(([catKey, cat]) => {
+  cat.articles.forEach((article, i) => {
+    allArticles.push({ ...article, catKey, catTitle: cat.title, index: i });
+  });
+});
+
+function openCategory(key) {
+  const cat = categories[key];
+  document.getElementById('catPageTitle').textContent = cat.title;
+  const list = document.getElementById('catArticleList');
+  list.innerHTML = '';
+  cat.articles.forEach((article, i) => {
+    const div = document.createElement('div');
+    div.className = 'article-item';
+    div.innerHTML = `<div class="article-item-text">${article.title}</div><div class="article-item-arrow">›</div>`;
+    div.onclick = () => openArticle(article, key);
+    list.appendChild(div);
+  });
+  document.getElementById('categoryPage').style.display = 'block';
+  document.getElementById('categoryPage').scrollTop = 0;
+}
+
+function closeCategory() {
+  document.getElementById('categoryPage').style.display = 'none';
+}
+
+function openArticle(article, fromCat) {
+  const content = document.getElementById('articleContent');
+  content.innerHTML = `
+    <div class="article-title">${article.title}</div>
+    <div class="article-meta">MyAIDoubt Support • ${categories[fromCat || article.catKey].title}</div>
+    <div class="article-body">${article.content}</div>
+    <div class="helpful-row">
+      <div class="helpful-label">Was this helpful?</div>
+      <button class="helpful-btn" onclick="showToast('👍 Thanks for your feedback!')">👍 Yes</button>
+      <button class="helpful-btn" onclick="showToast('📝 We\'ll improve this article!')">👎 No</button>
+    </div>
+  `;
+  document.getElementById('articleDetail').style.display = 'block';
+  document.getElementById('articleDetail').scrollTop = 0;
+}
+
+function closeArticle() {
+  document.getElementById('articleDetail').style.display = 'none';
+}
+
+function handleSearch(val) {
+  const resultsEl = document.getElementById('searchResults');
+  if (!val.trim()) { resultsEl.style.display = 'none'; return; }
+  const q = val.toLowerCase();
+  const matches = allArticles.filter(a => a.title.toLowerCase().includes(q)).slice(0, 5);
+  if (!matches.length) { resultsEl.style.display = 'none'; return; }
+  resultsEl.innerHTML = matches.map(a => `
+    <div class="search-result-item" onclick="openArticle(allArticles[${allArticles.indexOf(a)}], '${a.catKey}'); document.getElementById('searchResults').style.display='none'; document.getElementById('searchInput').value='';">
+      <span style="font-size:16px;">📄</span>
+      <span>${a.title}</span>
+    </div>
+  `).join('');
+  resultsEl.style.display = 'block';
+}
+
+function showContactForm() {
+  document.getElementById('contactModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function hideContactForm() {
+  document.getElementById('contactModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function submitForm() {
+  const name = document.getElementById('formName').value.trim();
+  const email = document.getElementById('formEmail').value.trim();
+  const type = document.getElementById('formType').value;
+  const msg = document.getElementById('formMessage').value.trim();
+  if (!name || !email || !type || !msg) { showToast('⚠️ Please fill all fields'); return; }
+
+  const btn = document.querySelector('.form-submit');
+  btn.textContent = '⏳ Sending...';
+  btn.disabled = true;
+
+  // FORMSPREE — replace xnjonwwo after signing up at formspree.io
+  fetch('https://formspree.io/f/xnjonwwo', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      issue_type: type,
+      message: msg
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    btn.textContent = '🚀 Send Ticket →';
+    btn.disabled = false;
+    if (data.ok) {
+      hideContactForm();
+      // clear form
+      document.getElementById('formName').value = '';
+      document.getElementById('formEmail').value = '';
+      document.getElementById('formType').value = '';
+      document.getElementById('formMessage').value = '';
+      showToast('✅ Ticket submitted! We\'ll reply within 24hrs');
+    } else {
+      showToast('❌ Something went wrong. Email us directly!');
+    }
+  })
+  .catch(() => {
+    btn.textContent = '🚀 Send Ticket →';
+    btn.disabled = false;
+    showToast('❌ Failed to send. Email: myaidoubt@gmail.com');
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Close search on outside click
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap')) {
+    document.getElementById('searchResults').style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>
