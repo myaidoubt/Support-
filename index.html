@@ -102,6 +102,21 @@
   .mp-discover-header { padding: 22px 22px 0; flex-shrink: 0; }
   .mp-discover-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 
+  .mp-logo-lockup { display: flex; align-items: center; gap: 10px; }
+  .mp-logo-icon {
+    display: flex; align-items: center; gap: 3px;
+    height: 28px;
+  }
+  .mp-logo-bar {
+    width: 4px; border-radius: 3px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .mp-install-always {
+    border-color: var(--gold) !important;
+    color: var(--gold) !important;
+  }
+
   .mp-tabs { display: flex; gap: 22px; border-bottom: 1.5px solid var(--line); overflow-x: auto; scrollbar-width: none; }
   .mp-tabs::-webkit-scrollbar { display: none; }
   .mp-tab {
@@ -619,10 +634,24 @@
   <div class="mp-screen" id="screen-discover">
     <div class="mp-discover-header">
       <div class="mp-discover-top">
-        <h1 class="mp-topbar-title">Audiq</h1>
-        <button class="mp-icon-btn" id="goSearchBtn" aria-label="Search">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </button>
+        <div class="mp-logo-lockup">
+          <div class="mp-logo-icon">
+            <div class="mp-logo-bar" style="height:10px;opacity:0.4;"></div>
+            <div class="mp-logo-bar" style="height:17px;opacity:0.65;"></div>
+            <div class="mp-logo-bar" style="height:24px;opacity:1;"></div>
+            <div class="mp-logo-bar" style="height:17px;opacity:0.65;"></div>
+            <div class="mp-logo-bar" style="height:10px;opacity:0.4;"></div>
+          </div>
+          <h1 class="mp-topbar-title">Audiq</h1>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="mp-icon-btn mp-install-always" id="installAlwaysBtn" aria-label="Install app" title="Install Audiq app">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+          <button class="mp-icon-btn" id="goSearchBtn" aria-label="Search">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+        </div>
       </div>
       <div class="mp-tabs" id="tabs">
         <button class="mp-tab active" data-tab="Overview">Overview</button>
@@ -646,6 +675,7 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
+
 
     <div class="mp-scroll" id="discoverContent">
       <div id="discoverOverview">
@@ -1273,7 +1303,7 @@
     var area = document.getElementById("onlineResultsArea");
 
     if (!jamendoConfigured()) {
-      area.innerHTML = '<p class="mp-empty-state"><strong>Setup needed</strong>Add your free Jamendo client_id near the top of the script (look for JAMENDO_CLIENT_ID) to turn this on. Takes about a minute at devportal.jamendo.com.</p>';
+      area.innerHTML = '<p class="mp-empty-state"><strong>Coming soon</strong>Online streaming is being set up. In the meantime, upload your own songs using the Create button below.</p>';
       return;
     }
 
@@ -2110,6 +2140,33 @@
 
   window.addEventListener("appinstalled", function () {
     document.getElementById("installBanner").classList.add("hidden");
+    document.getElementById("installAlwaysBtn").style.display = "none";
+  });
+
+  // Always-visible install button in header — works for all browsers
+  document.getElementById("installAlwaysBtn").addEventListener("click", function () {
+    if (deferredInstallPrompt) {
+      // Chrome/Android: use native prompt
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.then(function () {
+        deferredInstallPrompt = null;
+      });
+    } else {
+      // Safari/others: show a friendly how-to sheet
+      var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      var isSamsung = /samsungbrowser/i.test(navigator.userAgent);
+      var msg = isIOS
+        ? "To install: tap the Share button (□↑) at the bottom of Safari, then tap \"Add to Home Screen\"."
+        : isSamsung
+        ? "To install: tap the Menu (⋮) in Samsung Browser, then tap \"Add page to\" → \"Home screen\"."
+        : "To install: open this page in Chrome on Android, tap the Menu (⋮), then tap \"Add to Home screen\".";
+      showToast(msg.substring(0, 80) + "…");
+      // Also show the banner with full instructions
+      document.getElementById("installBanner").classList.remove("hidden");
+      document.getElementById("installBanner").querySelector(".mp-install-sub").textContent = isIOS
+        ? "Safari: Share → Add to Home Screen"
+        : "Chrome: Menu ⋮ → Add to Home screen";
+    }
   });
 
   loadTrack(currentIndex);
